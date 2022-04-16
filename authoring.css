@@ -1,0 +1,641 @@
+* {
+  box-sizing: border-box;
+}
+
+html{height: 100%;}
+
+html, body, .sideMargin, #modelPane, .modelWrap {
+  display: flex;
+  flex-direction: column;  
+  width: 100%;
+  flex: 1;
+}
+
+html.modelLoaded, .modelLoaded body, .modelLoaded .sideMargin, .modelLoaded .modelPane, .modelLoaded .modelWrap {
+  /* overflow scrolling done in model to keep all in viewport height */
+  overflow-y: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: black;
+}
+ 
+::-webkit-scrollbar-thumb {
+  background: #555;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  border:1px solid #00ccff; 
+}
+
+::-webkit-scrollbar-corner {
+    background:black;
+}
+
+body {
+  padding: 0px;
+  margin: 0px;
+  font-family: "Roboto", sans-serif;
+  background: #333;
+  color:#eee;
+}
+
+a, a:visited {
+    color: #00ccff;
+    
+}
+
+.header {
+    background: black;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+h1, h2 {
+    font-size: 25px;
+    padding-top: 0px;
+    line-height: 60px;
+    margin: 0px 5px;
+    text-align: center;
+}
+
+h1 {
+  color: #00ccff;
+  font-family: "Noto Sans", sans-serif;
+  font-weight: 900;
+}
+
+h2 {
+  font-family: "Raleway", sans-serif;
+  font-weight: 400;
+  color: white;
+}
+
+#helpButton {
+   position: absolute;
+   right: 20px;
+   top: 20px;
+   cursor: pointer;
+   transition: .2s;
+   display:none;
+}
+
+.modelLoaded #helpButton {
+    display:inherit;
+}
+
+#helpButton:hover {
+    color:#00ccff;
+    border-bottom:1px dashed;
+}
+
+#helpButton.active {
+    color:#00ccff;
+    font-weight:bold;
+    border-bottom: none;
+}
+
+h3 {
+  font-family: "Raleway", sans-serif;
+  font-weight: bold;
+  font-size: 22px;
+  margin: 5px 0px;
+  color: #00ccff;
+}
+
+h4 {
+  font-family: "Raleway", sans-serif;
+  font-size: 16px;
+  margin: 15px 0 10px 0px;
+  color: #00ccff;
+}
+
+
+input::selection {
+  background-color: #00ccff;
+  color: white;
+}
+
+.sideMargin {
+  padding: 0px 20px;
+}
+
+.topPanel {
+    flex-shrink: 0;
+    position: relative;
+}
+
+button {
+  outline: none;
+  border: 2px solid #00ccff;
+  border-radius: 3px;
+  background: #333;
+  padding: 5px;
+  min-width: 100px;
+  transition: all 0.2s;
+  font-weight: bold;
+  color: #00ccff;
+  font-size: 16px;
+}
+
+#download {
+  position: relative;
+  color: #aad400;
+  border-color: #aad400;
+}
+
+button:hover {
+  color: white;
+  background-color: #00ccff;
+  border-color: #00ccff;
+}
+
+#download:hover {
+  background-color: #aad400;
+  border-color: #aad400;
+  color: white;
+}
+
+#viewer{
+    display:block;
+    border: none;
+    width:100%;
+    height:100%;
+}
+
+.viewWrap {
+    position: relative;
+    margin: 20px auto;
+    max-width: 480px;
+    height: 270px;
+    display:block;
+}
+
+#viewPanel {
+    margin-bottom: 20px;
+    display: none;
+}
+
+.showPreview #viewPanel {
+    display:inherit;
+}
+
+
+#filePanel {
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+}
+
+#filename {
+  /* font-weight: 700; */
+  font-size: 25px;
+  line-height: 25px;
+}
+
+.helpBox {
+    position: absolute;
+    top:0px;
+    left: 0px;
+    background-color: #000000;
+    color: white;
+    padding: 20px;
+    transition: background .2s;
+    overflow-y: auto;
+    display:none;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0px 0px 15px 5px rgb(255 255 255 / 30%);
+}
+
+.imgCenter {margin:0px auto;text-align: center;}
+
+#viewPanel .helpBox img {
+    width: 70%;
+    max-width: 420px;
+    margin: 0px auto;
+}
+
+.helpBox p, .helpBox h3, .helpBox h4, .helpBox ul {
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.helpBubble {
+    display:none;
+    position: absolute;
+    background-color: #000000;
+    color: #00ccff;
+    border-radius: 10px;
+    padding: 10px;
+    font-weight: normal;
+    box-shadow: 0px 0px 15px rgb(255 255 255 / 75%);
+}
+
+.helpBubble:after {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 0;
+    z-index: 1;
+    border-style: solid;
+    border-color: transparent #000000aa;
+    border-width: 15px 25px 15px 0px;
+    top: 25%;
+    left: 0px;
+    margin-left: -20px;
+}
+
+#download .helpBubble {
+    top: -15px;
+    left: 110px;
+    width: 175px;
+}
+
+.layerHelp.helpBubble {
+    white-space: nowrap;
+    bottom: -360px;
+    left: 5px;
+}
+
+.layerHelp.helpBubble:after {
+    border-width: 25px 15px 0px;
+    top: initial;
+    left: 51%;
+    bottom: -20px;
+    border-color: #000000aa transparent;
+}
+
+
+.showHelp .helpBubble, .showHelp .helpBox, .showHelp .helpBack {
+    display:initial;
+}
+
+.buttonPanel {margin-left: 10px;}
+
+#dropper {
+  /* position: relative; */
+  padding: 20px;
+  text-align: center;
+  transition: border-color 0.3s;
+  transition: all 0.2s;
+  cursor: pointer;
+  height: 210px;
+  border-radius: 10px;
+  border: 3px dashed #00ccff;
+  max-width: 400px;
+  margin: 35px auto;
+  font-family: 'Raleway';
+}
+
+.showPreview #dropper {
+    display:none;
+}
+
+.iconBox {
+  border-radius: 50%;
+  background-color: white;
+  width: 80px;
+  height: 80px;
+  margin: 20px auto 20px auto;
+  padding-top: 12px;
+}
+
+.boxIcon {
+  display: block;
+  margin: 10px auto 0px;
+  transition: transform 0.3s;
+  fill: #aaa;
+  height: 30px;
+}
+
+#dropper.dropActive {
+  box-shadow: 3px 3px 12px 0px rgba(0, 0, 0, 0.2);
+  background-color: #00ccff;
+}
+
+.dropclick {
+  transition: all 0.2s;
+  font-weight: 700;
+  font-size: 19px;
+  color: inherit;
+}
+
+#dropper:hover .dropclick {
+  color: #00ccff;
+}
+
+#dropper:hover .boxIcon {
+  transform: rotate(180deg);
+  fill: #00ccff;
+}
+
+#dropper.dropActive::before {
+  border-color: white;
+}
+
+#dropper.dropActive .boxIcon {
+  animation: 0.5s ease-in infinite alternate touchdown;
+  fill: #00ccff;
+}
+
+@keyframes touchdown {
+  from {
+    margin-top: 10px;
+  }
+
+  to {
+    margin-top: 30px;
+  }
+}
+
+#dropper.dropActive .dropSozi {
+  color: #fff;
+}
+
+#dropper.dropActive .dropclick {
+  display: none;
+}
+
+#dropper.dropActive * {
+  pointer-events: none;
+}
+
+#infoPanel {
+    max-width: 520px;
+    margin: 40px auto 10px auto;
+}
+
+.modelLoaded #infoPanel {
+    display: none;
+}
+
+.hidden {
+  display: none !important;
+}
+
+#layers {
+   list-style:none;
+   padding:0px;
+   margin: 10px 0px 0px;
+   display: inline-block;
+}
+
+
+#layers li {
+    margin-right: 5px;
+    font: 18px sans-serif;
+    padding: 6px 10px;
+    float:left;
+    cursor:pointer;
+    transition: .2s;
+    border: 2px solid #333;
+}
+
+#layers li:hover {
+    /* color: #aad400; */
+    /* background: #aad40066; */
+    border-color: #aad400;
+    }
+
+#layers li.selected {
+    background:#aad400;
+    color: black;
+}
+
+.modelPane {
+    margin: 0px auto;
+    max-width: 1200px;
+    display:none;
+    width:100%;
+}
+
+.modelLoaded .modelPane {
+    display: flex;
+flex-direction: column;}
+
+.modelWrap {
+    position:relative;
+    margin: 10px 0px;
+}
+/*
+#expander {
+    height:60px;
+    background: black;
+}
+
+#expander.onTween {
+    height:0px;
+}
+*/
+
+#model {
+    background: black;
+    list-style: none;
+    outline: none;
+    padding: 0px 20px;
+    margin: 0px;
+    overflow: auto;
+    border: 2px solid #444;
+    background: black;
+}
+
+#model li {
+    list-style: none;
+    outline: none;
+}
+
+.order {
+    background-color: #444;
+    padding:10px;
+    border: 3px #444 solid;
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.tween {
+    height: 20px;
+    border: 3px solid black;
+}
+
+.step {
+    display:flex;
+    flex-direction: row;
+    padding:0px;
+}
+
+.selected {
+    border-color: #00ccff!important;
+}
+
+.dragged {
+    border-color: #00ccff;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.4);
+}
+
+#model .dragover {
+    border-color: #54BFF7;
+    transition: background-color .2s;
+}
+
+.tween.dragover {
+    height:80px;
+}
+
+#model .tween, #expander {
+    transition: height .2s ease-in-out 30ms;
+}
+    
+.orderNo {
+    color: #00ccff;
+    font-size: 40px;
+    font-family: "Noto Sans", sans-serif;
+    font-weight: 900;
+    line-height:50px;
+    margin: 25px 0px 0px 10px;
+    min-width: 50px;
+}
+
+.part {
+    min-width: 125px;
+    height: 90px;
+    text-align:center;
+    border-radius: 10px;
+    margin: 0px 5px;
+    padding: 5px;
+    box-sizing: border-box;
+    border: 3px solid;
+}
+
+.step .icon {
+    margin-top:10px;
+    height: 50%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+.step .view {
+    background-color: #45bdce;
+    border-color: #45bdce;
+}
+
+.step .view .icon {
+    background-image: url("https://cdn.glitch.global/c35c4b20-b92a-476d-961c-ca8dbfc3abe4/view.svg?v=1650025925258");
+}
+
+.step .effectIn {
+    background-color: #3dc75f;
+    border-color: #3dc75f;
+}
+
+.step .effectIn .icon{
+    background-image: url("https://cdn.glitch.global/c35c4b20-b92a-476d-961c-ca8dbfc3abe4/effectin.svg?v=1650025917176");
+}
+
+.step .effectOut {
+    background-color: #5676F0;
+    border-color: #5676F0;
+}
+
+.step .effectOut .icon{
+    background-image: url("https://cdn.glitch.global/c35c4b20-b92a-476d-961c-ca8dbfc3abe4/effectout.svg?v=1650025920786");
+}
+
+.templates {
+    display:none;
+}
+
+.demo {
+    text-align: center;
+}
+
+.visitorBadge{
+    width: 80px;
+    
+    left: 15px;
+    top: 17px;opacity: 0;
+    transition: .2s;
+position: absolute;}
+
+.visitorBadge:hover {
+    opacity:1;
+    
+}
+
+@media only screen and (min-width: 1000px) {
+    .modelLoaded .sideMargin {
+        display: flex;
+        flex-direction: row-reverse;
+    }
+    
+    .modelLoaded .topPanel {
+        width: 50%;
+    }
+    
+    #viewPanel {
+        margin-top: 67px;
+        width: 100%;
+        padding-left: 20px;
+    }
+    
+    
+    .modelPane {
+        width: 50%;
+        flex: 1;
+        max-width: initial;
+    }
+    
+    #layers {
+        margin-top:20px;
+    }
+    
+    #model {
+        min-height:27vw;
+    }
+    
+    #filePanel {
+        flex-direction: column;
+    }
+
+    #filename {
+        margin-bottom: 10px;
+    }
+
+    #download .helpBubble {
+        width: 290px;
+        left: -92px;
+        top: 44px;
+    }
+
+    #download .helpBubble:after {
+        border-color: #000000 transparent;
+        border-width: 0 15px 20px;
+        top: -20px;
+        left: 50%;
+        margin-left: -20px;
+    }
+    
+    .layerHelp.helpBubble {
+        bottom: -9px;
+    }
+
+    .viewWrap {
+        width: calc(100% - 1px);
+        height: 27vw;
+        max-width: none;
+    }
+    
+    #viewPanel .helpBox img {
+        margin-top: 3%;
+    }
+}

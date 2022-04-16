@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@700&family=Raleway:wght@400;600&family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./authoring.css" />
+  </head>
+  <body>
+    <div class="header hasHelp">
+        <h1>JESSYINK</h1>
+        <h2> Cutroom </h2>
+        <div id="helpButton">help</div>
+        <div class="layerHelp helpBubble">
+            Select slide to edit.
+        </div>
+    </div>
+    <div class="sideMargin">
+        <div class ="topPanel hasHelp">
+          <div id="dropper">
+            <div class="iconBox">
+              <svg
+                class="boxIcon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 37 50"
+              >
+                <path
+                  d="M 15.332365,3.3178299 V 39.752761 L 5.0844901,29.709417 c -2.971636,-2.971641 -7.2900792,1.402188 -4.36195008,4.454564 L 15.953285,49.087662 c 1.223863,1.223861 3.759143,1.219869 5.011897,-0.03289 L 36.171394,34.164926 c 3.194585,-2.896842 -1.382153,-7.58104 -4.352424,-4.454332 L 21.561528,39.75149 V 3.3190549 c 0,-4.413113 -6.16331,-4.4390222 -6.228974,4.7e-5 z"
+                ></path>
+              </svg>
+            </div>
+            <div class="dropSozi">
+              Drop your JessyInk.svg here
+            </div>
+            <div class="dropclick">
+              or click to choose a file
+            </div>
+            <input
+              id="fileChooser"
+              type="file"
+              accept=".svg,.svg"
+              class="hidden"
+            />
+          </div>
+        <div id="viewPanel">
+        <div class="viewWrap">
+            <div class="helpBox">
+                <h3>Presentation View</h3>
+                <p>
+                    shows your Jessyink presentation.
+                    Click it and navigate through slides, views and effects as usual.
+                </p>
+                <div class="imgCenter">
+                    <img src="/files/Jessyink navigation.svg">
+                </div>
+            </div>
+            <iframe id="viewer"></iframe>
+        </div>
+          <div id="filePanel">
+              <div id="filename">this is not a filename</div>
+              <div class="buttonPanel">
+                <button id="download">download
+                <div class ="helpBubble">
+                    Download edited presentation.
+                </div>
+                </button>
+              </div>
+          </div>
+        </div>
+        </div>
+        <div id="infoPanel">
+            <h3>Welcome to the JessyInk Cutroom</h3>
+            <p>
+                The cutroom is a brain friendly, visual editor for JessyInk presentations.
+            </p>
+            <p>
+                JessyInk is a build in extension of the free SVG editor <a href="https://inkscape.org/">Inkscape</a>.
+                It allows to create animated presentations in a Sozi or Prezi like pan and zoom style.
+            </p>
+            <p>
+                Here is an <a href ="/files/JessyInkDemo.svg">example presentation</a> including a basic how to.
+            </p>
+            <p>
+                JessyInk might feel a little lofi, but it's super simple workflow still makes it a handy tool for a quick and vivid alternative 
+                to the next boring powerpoint.
+            </p>
+            <p>
+                Unfortunately, reworking a presentation is quite a hassle - especially after some time. 
+                Jessyink does not offer any kind of visual storyboard or graphic editor.
+                It's all numbers and figures - you know, the stuff we need excel for and that's not the hell you want to enter.
+            </p>            
+            <p>
+                The cutroom shows what happens when in your presentation and provides an easy drag and drop editor.
+            </p>            
+        </div>
+        
+        <div class="modelPane hasHelp">
+            <ul id="layers">
+            </ul>
+            <div class="modelWrap">
+                <div class="helpBox">
+                    <h3>Step View</h3>
+                    <p>
+                        displays the current slide's views and effects in order of their appearance.
+                        A blue border highlights the step currently shown in the presentation view.
+                    </p>
+                    <p>
+                        Click on a step or use arrow up and down keys to switch the current step.
+                    </p>
+                    <h4>Editing</h4>
+                    <p> to change the order of appearance, you can... </p>
+                    <div class="imgCenter"> <img src="/files/Stepview dragging.svg"/></div>
+<!--                    <div class="demo">
+                        <div class="order selected">
+                            <div class="step">
+                                <div class="orderNo">3</div>
+                                <div class="part view"><div class="label">View</div><div class="icon"></div></div>
+                                <div class="part effectIn"><div class="label">Effect In</div><div class="icon"></div></div>
+                                <div class="part effectOut"><div class="label">Effect Out</div><div class="icon"></div></div>
+                            </div>
+                        </div>
+                    </div>
+-->
+                    <p>
+                        Drop targets are highlighted while dragging. However, there are some restrictions:<br>
+                        <ul>
+                            <li>Steps can only contain one view</li>
+                            <li>Steps cannot contain effect in and effect out of the same object</li>
+                        </ul>
+                    </p>
+                    <h4>Effect identification</h4>
+                    <p>
+                        moving the mouse over an effect will highlight the object in the presentation view.
+                        If it does not show, the object is probably outside the current view bounds.
+                    </p> 
+                </div>
+                <ul id="model" tabindex="0">    
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <img class="visitorBadge" src="https://visitor-badge.glitch.me/badge?page_id=tshoppainfo.jessyink-cutroom.dev" alt="visitor badge"/>
+    
+    <div class="templates">
+        <li id="templateview" class="part view">
+                <div class="label"></div>
+                <div class="icon"></div>
+        </li>
+        <li id="templateeffectIn" class="part effectIn">
+                <div class="label"></div>
+                <div class="icon"></div>
+        </li>
+        <li id="templateeffectOut" class="part effectOut">
+                <div class="label"></div>
+                <div class="icon"></div>
+        </li>
+    </div>
+
+    <script src="./authoring.js"></script>
+  </body>
+</html>
