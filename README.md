@@ -1,5 +1,5 @@
 # jessyink-cutroom
-Jessyink cutroom is an visual editor to rearrange the order of views and effects in presentations build with jessyink.
+Jessyink cutroom is a visual editor to rearrange the order of views and effects in presentations build with jessyink.
 
 Here is a running version of [cutroom hosted on glitch](https://jessyink-cutroom.glitch.me/).
 
