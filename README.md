@@ -10,3 +10,11 @@ Jessyink's interface is limited to a bunch of dialogs to enter order and propert
 [Jessyink cutroom](https://tshoppa.github.io/jessyink-cutroom/) provides a visual timeline of a presentation's views and effects and an easy drag and drop editor for rearrangement. For each step, the actual presentation view will be displayed in a preview window. 
 
 The app is client only, everything is processed in the frontend html/javascript.
+
+# Update
+Cutroom got some new features:
+- Editable duration and transition type for effects and views
+- **Exclusive: Animation easing** 30 algorithms to make animation timing more natural, dynamic or fancy
+- **Exclusive: Real "Pop" effect** Pop effect was kind of broken in jessyink, now objects really pop up if the effect is applied! 
+
+[Watch the demo!](https://tshoppa.github.io/jessyink-cutroom/files/NewFeaturesDemo.svg)
