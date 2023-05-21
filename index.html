@@ -7,9 +7,6 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./authoring.css" />
-    <title>The JessyInk Cutroom</title>
-    <meta name="description" content="A brain friendly visual editor for jessyink presentations.">
-    <meta name="keywords" content="jessyink, inkscape, presentation, prezi, editor, visual, graphic, order, drag and drop">
   </head>
   <body>
     <div class="header hasHelp">
@@ -56,7 +53,7 @@
                     Click it and navigate through slides, views and effects as usual.
                 </p>
                 <div class="imgCenter">
-                    <img src="./files/Jessyink navigation.svg">
+                    <img src="/files/Jessyink navigation.svg">
                 </div>
             </div>
             <iframe id="viewer"></iframe>
@@ -79,23 +76,31 @@
                 The cutroom is a brain friendly, visual editor for JessyInk presentations.
             </p>
             <p>
-                JessyInk is a build in extension of the free SVG editor <a href="https://inkscape.org/">Inkscape</a>.
-                It allows to create animated presentations in a Sozi or Prezi like pan and zoom style.
+                JessyInk is a build in extension of <a target="_blank" href="https://inkscape.org/">Inkscape</a> to
+                create animated presentations in a Sozi or Prezi like pan and zoom style.
             </p>
             <p>
-                Here is an <a href ="./files/JessyInkDemo.svg">example presentation</a> including a basic how to.
+                Here is an <a target="_blank" href ="/files/JessyInkDemo.svg">EXAMPLE</a> including a basic how to.
             </p>
             <p>
-                JessyInk might feel a little lofi, but it's super simple workflow still makes it a handy tool for a quick and vivid alternative 
-                to the next boring powerpoint.
+                JessyInk might feel a little lofi, but it's super simple workflow still makes it a handy tool for a vivid alternative to the next boring powerpoint.
             </p>
             <p>
-                Unfortunately, reworking a presentation is quite a hassle - especially after some time. 
-                Jessyink does not offer any kind of visual storyboard or graphic editor.
-                It's all numbers and figures - you know, the stuff we need excel for and that's not the hell you want to enter.
+                Unfortunately Jessyink does not offer any kind of visual storyboard or graphic editor.
+                So creating complex presentations or reworking some old stuff quickly becomes a hassle.
             </p>            
             <p>
                 The cutroom shows what happens when in your presentation and provides an easy drag and drop editor.
+            </p>            
+            <h3 class="fancy">Update!</h3>
+            <p>
+                New features available: 
+                <ul>
+                    <li><span class="accent">Edit</span> effect duration and style (pop, appear, fade)</li>
+                    <li>Add <span class="accent">easing</span> for more natural or accentured animation! </li>
+                    <li>"Pop" effect now <span class="accent">really pops</span>, especially combined with easing!</li>
+                </ul>
+                watch this <a target="_blank" href="/files/NewFeaturesDemo.svg">DEMO</a>!
             </p>            
         </div>
         
@@ -111,10 +116,11 @@
                     </p>
                     <p>
                         Click on a step or use arrow up and down keys to switch the current step.
+                        Arrows left and right also switch the step while playing the animations.
                     </p>
                     <h4>Editing</h4>
                     <p> to change the order of appearance, you can... </p>
-                    <div class="imgCenter"> <img src="./files/Stepview dragging.svg"/></div>
+                    <div class="imgCenter"> <img src="/files/Stepview dragging.svg"/></div>
 <!--                    <div class="demo">
                         <div class="order selected">
                             <div class="step">
@@ -142,11 +148,63 @@
                 <ul id="model" tabindex="0">    
                 </ul>
             </div>
+                <div class="optionBar">
+                    Time: <input id="effectTime" type="number">
+                    Style: <div class="dropdown">
+                        <span id="effectStyle" class="dropValue">Fade</span>
+                        <ul>
+                            <li>fade</li>
+                            <li>pop</li>
+                            <li>appear</li>
+                        </ul>
+                        </div>
+                    Easing: 
+                    <div class="dropdown">
+                        <span id="effectEasing" class="dropValue">InQuad</span>
+                        <ul class="crowded">
+                            <li>InSin</li>
+                            <li>OutSin</li>
+                            <li>InOutSin</li>
+                            <li>InQuad</li>
+                            <li>OutQuad</li>
+                            <li>InOutQuad</li>
+                            <li>InCubic</li>
+                            <li>OutCubic</li>
+                            <li>InOutCubic</li>
+                            <li>InQuart</li>
+                            <li>OutQuart</li>
+                            <li>InOutQuart</li>
+                            <li>InQuint</li>
+                            <li>OutQuint</li>
+                            <li>InOutQuint</li>
+                            <li>InExpo</li>
+                            <li>OutExpo</li>
+                            <li>InOutExpo</li>
+                            <li>InCirc</li>
+                            <li>OutCirc</li>
+                            <li>InOutCirc</li>
+                            <li>InBack</li>
+                            <li>OutBack</li>
+                            <li>InOutBack</li>
+                            <li>InElastic</li>
+                            <li>OutElastic</li>
+                            <li>InOutElastic</li>
+                            <li>InBounce</li>
+                            <li>OutBounce</li>
+                            <li>InOutBounce</li>
+                            <li>Linear</li>
+                            </ul>
+                    </div>
+                    <div class="helpBubble">
+                        edit effect duration, style and easing.
+                    </div>
+                </div>
         </div>
     </div>
     
-    <img class="visitorBadge" src="https://visitor-badge.glitch.me/badge?page_id=tshoppainfo.jessyink-cutroom.guthub.dev" alt="visitor badge"/>
-    
+    <!--
+    <img class="visitorBadge" src="https://visitor-badge.glitch.me/badge?page_id=tshoppainfo.jessyink-cutroom.dev" alt="visitor badge"/>
+    -->
     <div class="templates">
         <li id="templateview" class="part view">
                 <div class="label"></div>

@@ -16,6 +16,381 @@ if (!String.prototype.startsWith) {
 }
 // <- IE11 polyfills
 
+
+// injection templates ->
+
+const EASING_DEFINITIONS = `//Easing functions
+const c1 = 1.70158;
+const c2 = c1 * 1.525;
+const c3 = c1 + 1;
+const c4 = (2 * Math.PI) / 3;
+const c5 = (2 * Math.PI) / 4.5;
+const n1 = 7.5625;
+const d1 = 2.75;
+
+const ease = {
+    InSin:  function(x) {return 1 - Math.cos((x * Math.PI) / 2)},
+    OutSin: function(x){return Math.sin((x * Math.PI) / 2)},
+    InOutSin: function(x){return -(Math.cos(Math.PI * x) - 1) / 2},
+    InQuad : function(x){return x*x},
+    OutQuad : function(x){return 1 - (1 - x) * (1 - x)},
+    InOutQuad : function(x){return x &lt; 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2},
+    InCubic : function(x){return x*x*x},
+    OutCubic : function(x){return 1 - Math.pow(1 - x, 3)},
+    InOutCubic : function(x){return x &lt; 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2},
+    InQuart : function(x){return x*x*x*x},
+    OutQuart : function(x){return 1 - Math.pow(1 - x, 4)},
+    InOutQuart : function(x){return x &lt; 0.5 ? 8 * x * x * x * x : 1 - Math.pow(-2 * x + 2, 4) / 2},
+    InQuint : function(x){return x*x*x*x*x},
+    OutQuint : function(x){return 1 - Math.pow(1 - x, 5)},
+    InOutQuint : function(x){return x &lt; 0.5 ? 16 * x * x * x * x * x : 1 - Math.pow(-2 * x + 2, 5) / 2},
+    InExpo : function(x){return x == 0 ? 0 : Math.pow(2, 10 * x - 10)},
+    OutExpo : function(x){return x == 1 ? 1 : 1 - Math.pow(2, -10 * x)},
+    InOutExpo : function(x){ if( x == 0) return 0;
+                                  else if (x == 1) return 1;
+                                  else if (x &lt; 0.5) return Math.pow(2, 20 * x - 10) / 2;
+                                  else return (2 - Math.pow(2, -20 * x + 10)) / 2;
+                    },
+    InCirc : function(x){return 1 - Math.sqrt(1 - Math.pow(x, 2))},
+    OutCirc : function(x){return Math.sqrt(1 - Math.pow(x - 1, 2))},
+    InOutCirc : function(x){ if (x &lt; 0.5) return (1 - Math.sqrt(1 - Math.pow(2 * x, 2))) / 2;
+                                 else return (Math.sqrt(1 - Math.pow(-2 * x + 2, 2)) + 1) / 2;
+                    },
+    InBack : function(x){ return c3 * x * x * x - c1 * x * x;},
+    OutBack : function(x){ return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);},
+    InOutBack : function(x){ if( x &lt; 0.5) return (Math.pow(2 * x, 2) * ((c2 + 1) * 2 * x - c2)) / 2;
+                                 else return (Math.pow(2 * x - 2, 2) * ((c2 + 1) * (x * 2 - 2) + c2) + 2) / 2;
+                    },
+    InElastic : function(x){ if (x == 0) return 0;
+                                 else if (x == 1) return 1;
+                                 else return -Math.pow(2, 10 * x - 10) * Math.sin((x * 10 - 10.75) * c4);
+                    },
+    OutElastic : function(x){ if (x == 0) return 0;
+                                  else if ( x == 1) return 1;
+                                  else return Math.pow(2, -10 * x) * Math.sin((x * 10 - 0.75) * c4) + 1;
+                     },
+    InOutElastic : function(x){if (x == 0) return 0;
+                                  else if ( x == 1) return 1;
+                                  else if (x &lt; 0.5) return -(Math.pow(2, 20 * x - 10) * Math.sin((20 * x - 11.125) * c5)) / 2
+                                  else return (Math.pow(2, -20 * x + 10) * Math.sin((20 * x - 11.125) * c5)) / 2 + 1;
+                     },
+    InBounce : function(x){return 1 - ease.easeOutBounce(1 - x)},
+    OutBounce : function(x){ if (x &lt; 1 / d1) return n1 * x * x;
+                                 else if (x &lt; 2 / d1) return n1 * (x -= 1.5 / d1) * x + 0.75;
+                                 else if (x &lt; 2.5 / d1) return n1 * (x -= 2.25 / d1) * x + 0.9375;
+                                 else return n1 * (x -= 2.625 / d1) * x + 0.984375;
+                    },
+    InOutBounce : function(x){ if( x &lt; 0.5) return (1 - ease.easeOutBounce(1 - 2 * x)) / 2;
+                                   else return (1 + ease.easeOutBounce(2 * x - 1)) / 2;
+                      },
+    Linear : function(x){return x},
+}
+
+`;
+
+const POP_OPTIONS = `if( effectDict[&quot;effect&quot;] == &quot;pop&quot;)
+				{   
+					// for pop effect add object position and size to options
+					const bbox = newGroup.getBBox();
+					const options = effectDict[&quot;options&quot;];
+					options[&quot;x&quot;] = bbox.x;
+					options[&quot;y&quot;] = bbox.y;
+					options[&quot;width&quot;] = bbox.width;
+					options[&quot;height&quot;] = bbox.height;
+				}
+                
+				`;
+
+// insert before this
+const POP_OPTIONS_POS = `if (!tempEffects[dict[`;
+
+const VIEW_FUNC_START = `/** The view effect.`;
+const FADE_FUNC_START = `/** The fade effect.`;
+const POP_FUNC_START = `/** The pop effect.`;
+const FUNC_END = `return false;\n}`
+const VIEW_FUNCTION = `/** The view effect.
+ *
+ *  @param dir direction the effect should be played (1 = forwards, -1 = backwards)
+ *  @param element the element the effect should be applied to
+ *  @param time the time that has elapsed since the beginning of the effect
+ *  @param options a dictionary with additional options (e.g. length of the effect); for the view effect the options need to contain the old and the new matrix.
+ */
+ 
+function view(dir, element, time, options)
+{
+	var length = 250;
+    var easing = ease.Linear;
+	var fraction;
+    var stop = false;
+
+	if (!options[&quot;matrixInitial&quot;])
+	{
+		var tempString = slides[activeSlide][&quot;viewGroup&quot;].getAttribute(&quot;transform&quot;);
+
+		if (tempString)
+			options[&quot;matrixInitial&quot;] = (new matrixSVG()).fromAttribute(tempString);
+		else
+			options[&quot;matrixInitial&quot;] = (new matrixSVG()).fromSVGElements(1, 0, 0, 1, 0, 0);
+	}
+
+	if ((time == STATE_END) || (time == STATE_START))
+    {
+		fraction = 1;
+        stop = true;
+	} 
+    else
+	{
+		if (options) 
+        {
+            if (options[&quot;length&quot;]) length = options[&quot;length&quot;];
+            if (options[&quot;easing&quot;])
+            {
+                easeFunc = ease[options[&quot;easing&quot;]];
+                if( easeFunc) easing = easeFunc;
+            }
+        }
+            
+        if( dir == 1)
+        {
+            fraction = easing(time/length);
+        }
+        else 
+        {
+            fraction = 1 - easing((length - time) / length);
+        }
+        stop = (time >= length);
+	}
+
+	if (dir == 1)
+	{
+        if(stop)
+        {
+			element.setAttribute(&quot;transform&quot;, options[&quot;matrixNew&quot;].toAttribute());
+
+			set_path_paint_width();
+
+			options[&quot;matrixInitial&quot;] = null;
+			return true;            
+        }
+		else
+		{
+			element.setAttribute(&quot;transform&quot;, options[&quot;matrixInitial&quot;].mix(options[&quot;matrixNew&quot;], fraction).toAttribute());
+		}
+	}
+	else if (dir == -1)
+	{
+        if(stop) {
+            element.setAttribute(&quot;transform&quot;, options[&quot;matrixOld&quot;].toAttribute());
+			set_path_paint_width();
+
+			options[&quot;matrixInitial&quot;] = null;
+			return true;
+        }
+		else
+		{
+			element.setAttribute(&quot;transform&quot;, options[&quot;matrixInitial&quot;].mix(options[&quot;matrixOld&quot;], fraction).toAttribute());
+		}
+	}
+
+	return false;
+}
+
+`
+const FADE_FUNCTION = `/** The fade effect.
+ *
+ *  @param dir direction the effect should be played (1 = forwards, -1 = backwards)
+ *  @param element the element the effect should be applied to
+ *  @param time the time that has elapsed since the beginning of the effect
+ *  @param options a dictionary with additional options (e.g. length of the effect)
+ */
+function fade(dir, element, time, options)
+{
+	var length = 250;
+    var easing = ease.Linear;
+	var fraction;
+    var stop = false;
+
+	if ((time == STATE_END) || (time == STATE_START))
+    {
+		fraction = 1;
+        stop = true;
+	}
+    else
+	{
+		if (options) 
+        {
+            if (options[&quot;length&quot;]) length = options[&quot;length&quot;];
+            if (options[&quot;easing&quot;]) 
+            {
+                easeFunc = ease[options[&quot;easing&quot;]];
+                if( easeFunc) easing = easeFunc;
+            }  
+        }
+        
+        if( dir == 1)
+        {
+            fraction = easing(time/length);
+        }
+        else 
+        {
+            fraction = easing((length - time) / length);
+
+        }
+        if( fraction &lt; 0) fraction = 0;
+        else if (fraction &gt; 1) fraction = 1;
+        stop = (time >= length);
+	}
+
+	if (dir == 1)
+	{
+    
+        if(stop) 
+        {
+			element.style.display = &quot;inherit&quot;;
+			element.setAttribute(&quot;opacity&quot;, 1);
+			return true;
+        }
+        else {
+			element.style.display = &quot;inherit&quot;;
+			element.setAttribute(&quot;opacity&quot;, fraction);
+        }
+	}
+	else if (dir == -1)
+	{
+        if(stop)
+        {
+			element.setAttribute(&quot;opacity&quot;, 0);
+			element.style.display = &quot;none&quot;;
+			return true;
+        }
+        else
+        {
+			element.style.display = &quot;inherit&quot;;
+			element.setAttribute(&quot;opacity&quot;, fraction);
+		}
+	}
+	return false;
+}
+`
+
+const POP_FUNCTION = `/** The pop effect.
+ *
+ *  @param dir direction the effect should be played (1 = forwards, -1 = backwards)
+ *  @param element the element the effect should be applied to
+ *  @param time the time that has elapsed since the beginning of the effect
+ *  @param options a dictionary with additional options (e.g. length of the effect)
+ */
+function pop(dir, element, time, options)
+{
+	var length = 500;
+    var easing = ease.Linear;
+	var fraction;
+    var stop = false;
+    var x = 0;
+    var y = 0;
+    var width = WIDTH;
+    var height = HEIGHT;
+
+	if ((time == STATE_END) || (time == STATE_START))
+    {
+		fraction = 1;
+        stop = true;
+	}
+    else
+	{
+		if (options) 
+        {
+            if(options[&quot;length&quot;]) length = options[&quot;length&quot;];
+            if(options[&quot;x&quot;]) x = options[&quot;x&quot;];
+            if(options[&quot;y&quot;]) y = options[&quot;y&quot;];
+            if(options[&quot;width&quot;]) width = options[&quot;width&quot;];
+            if(options[&quot;height&quot;]) height = options[&quot;height&quot;];
+
+            if (options[&quot;easing&quot;]) 
+            {
+                easeFunc = ease[options[&quot;easing&quot;]];
+                if( easeFunc) easing = easeFunc;
+            }  
+        }
+            
+        if( dir == 1)
+        {
+            fraction = easing(time/length);
+        }
+        else 
+        {
+            fraction = easing((length - time) / length);
+        }
+        
+        if( fraction &lt; 0 ) fraction = 0;
+        stop = (time &gt;= length);
+	}
+
+	if (dir == 1)
+	{
+    
+        if(stop)
+        {
+			element.setAttribute(&quot;opacity&quot;, 1);
+			element.removeAttribute(&quot;transform&quot;);
+			element.style.display = &quot;inherit&quot;;
+			return true;
+        }
+		else
+		{
+			element.style.display = &quot;inherit&quot;;
+            
+			var opacityFraction = fraction * 3;
+			if (opacityFraction &gt; 1) opacityFraction = 1;
+			element.setAttribute(&quot;opacity&quot;, opacityFraction);
+            
+            const counterfrac = 1.0 - fraction;
+			const offsetX =  x * counterfrac + width * counterfrac / 2.0;
+			const offsetY =  y * counterfrac + height * counterfrac / 2.0;
+			
+            element.setAttribute(&quot;transform&quot;, &quot;translate(&quot; + offsetX + &quot;,&quot; + offsetY + &quot;) scale(&quot; + fraction + &quot;)&quot;);
+		}
+	}
+	else if (dir == -1)
+	{       
+        if (stop) 
+        {
+			element.setAttribute(&quot;opacity&quot;, 0);
+			element.removeAttribute(&quot;transform&quot;);
+			element.style.display = &quot;none&quot;;
+			return true;
+        }
+		else
+		{
+            element.style.display = &quot;inherit&quot;;
+			element.setAttribute(&quot;opacity&quot;, fraction);
+
+            const counterfrac = 1.0 - fraction;
+			const offsetX =  x * counterfrac + width * counterfrac / 2.0;
+			const offsetY =  y * counterfrac + height * counterfrac / 2.0;
+
+			element.setAttribute(&quot;transform&quot;, &quot;translate(&quot; + offsetX + &quot;,&quot; + offsetY + &quot;) scale(&quot; + fraction + &quot;)&quot;);
+		}
+	}
+	return false;
+}
+
+`
+
+ const VERSION_PHRASE = 'modified by cutroom version: ';
+ const VERSION_START = '<svg';
+
+// <- injection templates
+
+
+ /** current Version of cutroom. 
+  * for future use. Since cutroom started to modify js code it is neccessary
+  * to identify presentations, that are already updated by cutroom.
+  * If more changes going to happen, there must be some version indicating what already has been modified.
+  */ 
+ const VERSION = '1.0';
+
+
 function downloadFile(filename, content) {
   if (navigator.msSaveBlob)
     navigator.msSaveBlob(
@@ -58,12 +433,8 @@ function download() {
     // discard while help is shown
     if(helpVisible) return;
     
-    //make copy to remove presentationLayer
-    const docToSave = importDoc.cloneNode(true);
-    const presentationLayer = docToSave.getElementById("jessyink_presentation_layer");
-    presentationLayer.remove();
     const serializer = new XMLSerializer();
-    const content = serializer.serializeToString(docToSave);
+    const content = serializer.serializeToString(downloadDoc);
 
     downloadFile(fileName, content);
 }
@@ -304,6 +675,53 @@ function removeHighlight(){
     }
 }
 
+
+var selectedPart = null;
+var selectedPartView = null;
+
+function selectPart(part, partView){
+    deselectPart();
+    if(partView != null && part != null){
+        partView.classList.add("selected");
+        if(part.easing == null)part.easing = "Linear";
+        setOptionBarValues(part.length, part.name, part.easing, (part.type != "view"))
+        selectedPart = part;
+        selectedPartView = partView;
+    }
+}
+
+function deselectPart(){
+    if(selectedPartView != null) {
+        selectedPartView.classList.remove("selected");
+    }
+    selectedPart = null;
+    selectedPartView = null;
+}
+
+function setSelectedPartTime(time){
+    if(selectedPart && selectedPart.length != time){
+        selectedPart.length = time;
+        updateDocAttributes(selectedPart);
+        updatePreview();
+    }
+}
+
+function setSelectedPartStyle(style) {
+    if(selectedPart && selectedPart.name != style){
+        selectedPart.name = style;
+        updateDocAttributes(selectedPart);
+        updatePreview();
+    }
+}
+
+function setSelectedPartEasing(easing){
+    if(selectedPart && selectedPart.easing != easing){
+        selectedPart.easing = easing;
+        updateDocAttributes(selectedPart);
+        updatePreview();
+    }
+}
+
 function updateModelView(){
     const view = document.getElementById("model");
     view.replaceChildren(); //clear View    
@@ -337,6 +755,9 @@ function updateModelView(){
                         }
                     });
                 }
+                partView.addEventListener("click", function(e){                    
+                    selectPart(part, partView);
+                });
                 return partView;
     }
     
@@ -388,33 +809,58 @@ function updateModelView(){
 }
 
 var layers = {};
+
+// the actual document of the preview 
 var importDoc;
+
+// a clean shaddow document for download 
+// without any dom manipulations the jessyink script will do within the preview windows
+var downloadDoc;
+
+// the name of the currently loaded file
 var fileName;
 
 /**
  * update doc according to model changes
  */
-function updateDoc(){
+ 
+function stepToAtrValue(step){
+    return "name:"+step.name+";order:" + step.order + ";length:" + step.length + ";easing:" + step.easing;
+}
     
-    function stepToAtrValue(step){
-        return "name:"+step.name+";order:" + step.order + ";length:" + step.length;
-    }
-        
-    function stepToAtrKey(step){        
-        return "ns1:" + step.type;
-    }
+function stepToAtrKey(step){        
+    return "ns1:" + step.type;
+}
+
+function updateDocAttributes(step){
+            const val = stepToAtrValue(step);
+            const key = stepToAtrKey(step);
             
-    const layer = importDoc.querySelector('[id= "' + currentLayer.id + '"]');
+            //update the preview document and the shaddow doc for download
+            const previewElement = importDoc.getElementById(step.id);
+            const downloadElement = downloadDoc.getElementById(step.id);
+            
+            previewElement.setAttribute(key, val);
+            downloadElement.setAttribute(key, val);
+}
+
+function updateDoc(){            
+// old method
+//    const layer = importDoc.querySelector('[id= "' + currentLayer.id + '"]');
     const model = layers[currentLayer.id];
     const orders = model.keys();
     
     for (const order of orders) {
         var steps = Object.keys(model[order]);
         for( const stepId of steps){
-            const selector = '[id= "' + stepId + '"]';
             const step = model[order][stepId];
+/* old method
+            const selector = '[id= "' + stepId + '"]';
             const element = layer.querySelectorAll(selector)[0];
-            element.setAttribute(stepToAtrKey(step), stepToAtrValue(step));
+*/
+            
+            rt(step); 
+
         }
     }
 }
@@ -446,6 +892,7 @@ function getLayerByIndex(index){
 //on frame change in preview set layer and step as index
 function updateSelection(layer, step){
     if(currentLayer.index != layer) {
+		deselectPart();
         const newLayer = getLayerByIndex(layer);
         if(selectLayer(newLayer) || currentOrder.index != step) {
             selectOrder(getOrderAtStep(step));
@@ -471,6 +918,18 @@ function scrollToVisible(elem){
     }
 }
 
+function getViewForPart(part, orderElem){
+    const parts = orderElem.querySelectorAll(".part");
+    var result = null;
+    parts.forEach( function(p){
+        if(p.modelId == part.id){
+            result = p;
+            return;
+        }
+    });
+    return result;
+}
+
 var currentOrder = {}; //id, index
 function selectOrder(orderElem){
     const newId = orderElem.getAttribute("id");
@@ -483,6 +942,12 @@ function selectOrder(orderElem){
 
         currentOrder.id = newId;
         currentOrder.index = orderElem.modelIndex;
+        if(!selectedPart || selectedPart.order != currentOrder.index){
+                // select first part in order
+                const order = layers[currentLayer.id][currentOrder.index];
+                const aPart = Object.values(order)[0];
+                selectPart(aPart, getViewForPart(aPart, orderElem));
+        }
         return true;
     } else return false;
     
@@ -497,7 +962,8 @@ function selectOrderAndUpdatePreview(orderElem){
 
 //on click on element
 function orderClicked(e){
-    selectOrderAndUpdatePreview(findClass("order", e.target));
+    const order = findClass("order", e.target);
+    selectOrderAndUpdatePreview(order);
     e.stopPropagation();
 }
 
@@ -522,6 +988,7 @@ function focusModel(){
 //on click on layer
 function layerClicked(e){
     if(selectLayer(e.target)){
+        deselectPart();
         previewJumpToSlide(currentLayer.index, 0);
         focusModel();
     }
@@ -564,11 +1031,9 @@ function previewJumpToSlide(s,v){
     viewWindow.setSlideToState(viewWindow.activeSlide, viewWindow.activeEffect);
 }
 
-
-
 function previewReady(doc){
     importDoc = doc;
-    importDoc.defaultView.addEventListener("hashchange", frameChanged);
+    importDoc.defaultView.addEventListener("hashchange", frameChanged);    
     loadModel();    
 }
 
@@ -586,19 +1051,72 @@ function loadPreview(content) {
     viewer.src = url;
 }
 
+/**
+ * creates a shaddow document for later download, 
+ * that will not be manipulated by the jessyink scripts in the preview.
+ */
+function createDownloadDoc(content){
+    const parser = new DOMParser();
+    // scripts will not be executed, so we have a clean version here
+    downloadDoc = parser.parseFromString((content), "text/xml");
+}
 
 function processFile(name, content) {
     fileName = name;
-    document.getElementById("filename").innerHTML = fileName;  
+    document.getElementById("filename").innerHTML = fileName;
     
+    content = injectJSUpdate(content);
+    
+    loadPreview(content);
+    createDownloadDoc(content);
+
+// thanks, dear past schulzki! :-)
+  
 // methods to create document without using IFrame
-// old mehtod, kept here to remember :-)
+// old mehtod, kept here for future schulzki to remember :-)
 //    var parser = new DOMParser();
 //    importDoc = parser.parseFromString(injectScriptToPreview(content), "text/xml"); 
 //    const content = new XMLSerializer().serializeToString(importDoc);
 
-    loadPreview(content);
-}    
+    
+}
+
+// modifies the pages jessyink script to support easing functions
+// also fixes the pop function.
+function injectJSUpdate(content){
+    if( content.includes(VERSION_PHRASE)) return content; // later on maybe we have to check version and update gap
+    else {
+        const versionInsert = '<!-- ' + VERSION_PHRASE + VERSION + '-->\n';
+        versionPos = content.indexOf(VERSION_START);
+        const viewPos = content.indexOf(VIEW_FUNC_START);
+        const viewEnd = content.indexOf(FUNC_END, viewPos) + FUNC_END.length;
+        
+        const fadePos = content.indexOf(FADE_FUNC_START, viewEnd);
+        const fadeEnd = content.indexOf(FUNC_END,fadePos) + FUNC_END.length;
+        
+        const popPos = content.indexOf(POP_FUNC_START, fadeEnd);
+        const popEnd = content.indexOf(FUNC_END, popPos)+ FUNC_END.length;
+        
+        const popDefPos = content.indexOf(POP_OPTIONS_POS);
+        
+        var pimped = content.substring(0,versionPos) +  // content up to version Insertion place
+            versionInsert +                             // cutroom version labelCont
+            content.substring(versionPos, popDefPos) +  // content to position where pop options will be added
+            POP_OPTIONS +                               // for pop effect to work porperly, add bounding box of object to be scaled to options
+            content.substring(popDefPos, viewPos) +     // content to position where easing is added
+            EASING_DEFINITIONS +                        // easing definitions
+            VIEW_FUNCTION +                             // new view function
+            FADE_FUNCTION +                             // new fade function
+            //appear comes here
+            content.substring(fadeEnd,popPos) +         // original appear code
+            POP_FUNCTION +                              // new pop function
+            content.substring(popEnd);                  // rest of original code
+     
+        //console.log(pimped);
+        
+        return pimped;
+    }
+}
 
 function loadModel(){
     layers = {};
@@ -693,18 +1211,84 @@ function loadModel(){
             e.preventDefault();
             event.stopPropagation();
         }
-        if(e.keyCode == 38){    //keyUp
-            jumpToPreviousStep();
-            consume();
-        } else if (e.keyCode == 40){ //keyDown
-            jumpToNextStep();
-            consume();
+        
+        switch(e.keyCode){
+            case 38:    //keyUp
+                jumpToPreviousStep();
+                consume();
+                break;
+            case  40:   //keyDown
+                jumpToNextStep();
+                consume();
+                break;
+            case 37:    //left
+            case 39:    //right
+                importDoc.defaultView.keydown(e)    // forward to view WIndow
+                consume();
+                break;
         }
     });
     selectOrder(document.getElementById("order_0"));
     focusModel();
 }
 
+
+// OPtion Bar handling
+
+const effectTime = document.getElementById("effectTime");
+const effectStyle = document.getElementById("effectStyle");
+const effectEasing = document.getElementById("effectEasing");
+
+function setOptionBarValues(time, style, easing, hasStyle){
+        effectTime.value = time;
+        effectStyle.innerHTML = style;
+        effectEasing.innerHTML = easing;
+        if(hasStyle) effectStyle.parentElement.classList.remove("suspended");
+        else effectStyle.parentElement.classList.add("suspended");
+}
+
+// dropdown in options panel
+document.querySelectorAll(".dropdown").forEach(function(x){
+        x.addEventListener("mouseenter", function(e){
+            var dv = e.currentTarget.querySelector(".dropValue");
+            if(dv) {
+                var val = dv.innerHTML;
+                var entries = e.currentTarget.querySelectorAll("li");
+                entries.forEach(function (entry) {
+                    if(entry.innerHTML == val) entry.classList.add("highlight");
+                    else entry.classList.remove("highlight");
+                });
+            }
+        });
+    });
+
+const callbackMap = {
+    "effectEasing": setSelectedPartEasing,
+    "effectStyle": setSelectedPartStyle
+}
+
+document.querySelectorAll(".dropdown li").forEach(function(x){
+    x.addEventListener("click", function(e){
+        var dropdown = e.currentTarget.parentElement;
+        var label = dropdown.parentElement.querySelector(".dropValue");        
+        var newVal = e.currentTarget.innerHTML;
+        label.innerHTML = newVal;
+        var callback = callbackMap[label.id];
+        callback(newVal);
+        dropdown.style.height = "0px";
+        setTimeout(function (){
+            dropdown.style.height = null;
+         }, 10);
+    });
+});
+
+effectTime.addEventListener("change", function(e){
+    setSelectedPartTime(effectTime.value);
+});
+
+
+
+// drag and drop handling
 const dragNDrop = (function() {
     
   var dropper = document.getElementById("dropper");
