@@ -859,7 +859,7 @@ function updateDoc(){
             const element = layer.querySelectorAll(selector)[0];
 */
             
-            rt(step); 
+            updateDocAttributes(step); 
 
         }
     }
